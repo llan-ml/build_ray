@@ -1,11 +1,33 @@
-FROM ubuntu:16.04
-RUN apt-get update
-RUN apt-get install -y git wget cmake pkg-config build-essential autoconf curl libtool unzip flex bison python
-RUN apt-get install -y python3.5 python3.5-dev python3-pip
+FROM ubuntu:xenial
+RUN apt-get update \
+    && apt-get install -y \
+        git \
+        wget \
+        cmake \
+        pkg-config \
+        build-essential \
+        autoconf \
+        curl \
+        libtool \
+        unzip \
+        flex \
+        bison \
+    && apt-get clean \
+    && echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh \
+    && wget \
+        --quiet 'https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh' \
+        -O /tmp/anaconda.sh \
+    && /bin/bash /tmp/anaconda.sh -b -p /opt/conda \
+    && rm /tmp/anaconda.sh \
+    && /opt/conda/bin/conda install -y \
+        libgcc \
+    && /opt/conda/bin/conda clean -y --all \
+    && /opt/conda/bin/pip install \
+        flatbuffers \
+        cython==0.27.3
 
-RUN pip3 install --upgrade pip
-RUN pip3 install wheel
+ENV PATH "/opt/conda/bin:$PATH"
 
 RUN git clone https://github.com/ray-project/ray.git
 WORKDIR ./ray/python
-RUN python3.5 setup.py bdist_wheel
+RUN python setup.py bdist_wheel
