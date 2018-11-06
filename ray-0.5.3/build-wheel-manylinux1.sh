@@ -22,7 +22,7 @@ for PYTHON in cp36-cp36m; do
     # Fix the numpy version because this will be the oldest numpy version we can
     # support.
     /opt/python/${PYTHON}/bin/pip install -q numpy==1.10.4 cython==0.27.3
-    INCLUDE_UI=1 PATH=/opt/python/${PYTHON}/bin:$PATH /opt/python/${PYTHON}/bin/python setup.py bdist_wheel
+    INCLUDE_UI=1 PATH=/opt/python/${PYTHON}/bin:$PATH RAY_USE_NEW_GCS=on /opt/python/${PYTHON}/bin/python setup.py bdist_wheel
     # In the future, run auditwheel here.
     mv dist/*.whl ../.whl/
   popd
