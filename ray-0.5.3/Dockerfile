@@ -1,7 +1,8 @@
 FROM quay.io/xhochy/arrow_manylinux1_x86_64_base:latest
 
 WORKDIR /
-RUN git clone https://github.com/ray-project/ray.git \
+RUN git clone https://github.com/ray-project/ray.git
+RUN cd ray \
   && git checkout tags/ray-0.5.3 -b 0.5.3 \
   && git branch
 COPY ./build-wheel-manylinux1.sh /ray/python
